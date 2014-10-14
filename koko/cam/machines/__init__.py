@@ -7,4 +7,4 @@
 
 import mimaki650, modela, epilog, universal, null, shopbot, gcode, shopbot5
 
-MACHINES = [null, modela, epilog, universal, shopbot, gcode, shopbot5]
+MACHINES = [null, mimaki650, modela, epilog, universal, shopbot, gcode, shopbot5]
