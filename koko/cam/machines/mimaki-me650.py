@@ -1,4 +1,7 @@
-NAME = 'Roland Modela'
+NAME = 'Mimaki ME-650'
+# based on modela.py 20141014_11-38-32 by acsr developer@acsr.de
+# code repository https://github.com/acsr/kokopelli
+# forked from https://github.com/mkeeter/kokopelli
 
 import  os
 import  subprocess
@@ -9,9 +12,9 @@ import  wx
 import  koko
 from    koko.cam.panel import FabPanel, OutputPanel
 
-class ModelaOutput(OutputPanel):
+class Mimaki650Output(OutputPanel):
 
-    extension = '.rml'
+    extension = '.mgl'
 
 
     def __init__(self, parent):
@@ -35,11 +38,10 @@ class ModelaOutput(OutputPanel):
 
 
     def run(self, paths):
-        ''' Convert the path from the previous panel into a roland
-            modela file (with .rml suffix)
+        ''' Convert the path from the previous panel into a MGL-IIc3 file (with .mgl suffix)
         '''
 
-        koko.FRAME.status = 'Converting to .rml file'
+        koko.FRAME.status = 'Converting to .mgl file'
 
         values = self.get_values()
         if not values:  return False
@@ -86,8 +88,9 @@ class ModelaOutput(OutputPanel):
             # Lift then pen up at the end of the segment
             self.file.write("PU%d,%d;" % xy(*p.points[-1][0:2]))
 
-        self.file.write("!MC0;"*1000) # Modela buffering bug workaround
-        self.file.write("\nH;\n")
+        # Disabled for Mimaki
+        # self.file.write("!MC0;"*1000) # Modela buffering bug workaround
+        # self.file.write("\nH;\n")
         self.file.flush()
 
         koko.FRAME.status = ''
@@ -107,18 +110,18 @@ class ModelaOutput(OutputPanel):
         if not values:  return False
 
         x, y = values['xmin'], values['ymin']
-        with open('rml_move.rml') as f:
+        with open('mgl_move.mgl') as f:
             f.write("PA;PA;!VZ10;!PZ0,100;PU %d %d;PD %d %d;!MC0;" %
                     (x,y,x,y))
-        self.send('rml_move.rml')
-        os.remove('rml_move.rml')
+        self.send('mgl_move.mgl')
+        os.remove('mgl_move.mgl')
 
 ################################################################################
 
 from koko.cam.path_panels   import PathPanel
 
 INPUT = PathPanel
-PANEL = ModelaOutput
+PANEL = Mimaki650Output
 
 ################################################################################
 
@@ -139,7 +142,7 @@ DEFAULTS = [
         ],
     CadImgPanel:
         [('res', 5)],
-    ModelaOutput:
+    Mimaki650Output:
         [('speed', 29),
          ('jog', 1.0),
          ('xmin', 20),
@@ -159,7 +162,7 @@ DEFAULTS = [
         ],
     CadImgPanel:
         [('res', 5)],
-    ModelaOutput:
+    Mimaki650Output:
         [('speed', 20),
          ('jog', 1.0),
          ('xmin', 20),
@@ -179,7 +182,7 @@ DEFAULTS = [
          ],
     CadImgPanel:
         [('res', 15)],
-    ModelaOutput:
+    Mimaki650Output:
         [('speed', 4),
          ('jog', 1.0),
          ('xmin', 20),
@@ -198,7 +201,7 @@ DEFAULTS = [
          ],
     CadImgPanel:
         [('res', 15)],
-    ModelaOutput:
+    Mimaki650Output:
         [('speed', 2),
          ('jog', 1.0),
          ('xmin', 20),
@@ -218,7 +221,7 @@ DEFAULTS = [
          ],
     CadImgPanel:
         [('res', 15)],
-    ModelaOutput:
+    Mimaki650Output:
         [('speed', 4),
          ('jog', 1.0),
          ('xmin', 20),
